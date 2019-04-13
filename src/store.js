@@ -1,40 +1,43 @@
 import Vue from "vue";
 import Vuex from "vuex";
+// import VueSweetalert2 from 'vue-sweetalert2';
+
+// Vue.use(VueSweetalert2);
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    newNote:{},
-    notes: [{
-      poster: 'static/assets/logo.png',
-      id: 1,
-      title: 'sunt aut facere repellat provident occaecati', 
-      body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cumreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
-    },
-    {
-      poster: 'static/assets/logo.png',
-      id: 1,
-      title: 'sunt aut facere repellat provident occaecati',
-      body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cumreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
-    },
-      {
-        poster: 'static/assets/logo.png',
-        id: 1,
-        title: 'sunt aut facere repellat provident occaecati',
-        body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cumreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto'
-      },  
-  ],
+   notes: [
+     {
+       id:1,
+       title:'this is all about me',
+       note:'the note i have goes here'
+     }
+   ] 
   },
   mutations: {
-    ADD_NOTE:(state,payload) => {
-      state.notes.push(payload)
-      // this.newNote={}
+   ADD_NOTE:(state,payload) => {
+     state.notes.push(payload)
    },
+    DELETE_NOTE: (state, note) => {
+      let noteIndex = state.notes.findIndex(n => n.id === note.id);
+
+      //and delete it from the store
+      state.notes.splice(noteIndex, 1);
+    },
   },
   actions: {
-    addnote: (state, payload) => {
-      state.commit('ADD_NOTE', payload)
+    addNote:(state,payload) => {
+      state.commit('ADD_NOTE',payload)
+    },
+    deleteNote: (state, note) => {
+      state.commit('DELETE_NOTE', note)
+    },
+    },
+  getters: {
+    notes: (state) => {
+      return state.notes
     }
     }
 })

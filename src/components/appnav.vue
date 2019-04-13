@@ -24,8 +24,8 @@
                 <img src="../images/unsplash.jpg" class="responsive-img">
             </div>
             <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-            <a href="#name"><span class="white-text name">John Doe</span></a>
-            <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            <a href="#name"><span class="white-text name">Wisdom Ekpot</span></a>
+            <a href="#email"><span class="white-text email">wisdomekpot@gmail.com</span></a>
         </div>
     </li>
     <li><a href="#"><button data-target="modal1" class="btn-floating modal-trigger btn-small waves-effect waves-light blue darken-3 pulse"><i class="material-icons">create</i> </button> </a></li>
@@ -42,24 +42,25 @@
         <form  class="col s12">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="text" type="text" v-model="newNote.title">
+                    <input id="text" type="text" v-model="newtitle">
                     <label for="email">Diary Header</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea id="textarea1" class="materialize-textarea" v-model="newNote.body"></textarea>
-                    <label for="textarea1">Diary Content</label>
+                    <Editor class="eedit" api-key="ihm8v1dhe8cub24l6pines3mfhry26jypvxaogkglu8pncpc" :init="{plugins: 'wordcount'}" v-model="newNote" ></Editor>
+                    <!-- <textarea id="textarea1" v-model="newNote" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Diary Content</label> -->
                 </div>
             </div>
             <div class="row">
                 <div class="col s5 m5 l5">
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="fas fa-angry yellow-text"></i></a>
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="far fa-meh-blank yellow-text"></i></a>
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="fas fa-flushed yellow-text"></i></a>
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="fas fa-grin-squint-tears yellow-text"></i></a>
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="fas fa-grimace yellow-text"></i></a>
-                <a class="btn-floating btn-small waves-effect waves-light black"><i class="far fa-grin-beam yellow-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="fas fa-angry black-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="far fa-meh-blank black-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="fas fa-flushed black-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="fas fa-grin-squint-tears black-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="fas fa-grimace black-text"></i></a>
+                <a class="btn-floating btn-small waves-effect waves-light white"><i class="far fa-grin-beam black-text"></i></a>
                 </div>
                 <div class="col s7 m7 l7">
                     <div class="input-field col s12">
@@ -67,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" @click.prevent="addNote" class="btn blue">Add</button>
+            <button type="submit" @click.prevent="saveNote" class="btn blue">Add</button>
         </form>
     </div>
 </div>
@@ -76,7 +77,7 @@
 
 <!-- feature -->
 <div class="fixed-action-btn">
-    <a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">app</i></a>
+    <a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">apps</i></a>
     <ul>
         <li>
             <a  data-target="modal1" class="modal-trigger btn-floating btn-small waves-effect waves-light black"><i class="fas fa-plus blue-text darken-2"></i></a>
@@ -94,31 +95,38 @@
 </template>
 
 <script>
-import { mapState , mapMutations, mapActions } from 'vuex'
+import { mapActions , mapGetters} from 'vuex'
+import Editor from '@tinymce/tinymce-vue';
+import tinymce from "tinymce";
+
 export default {
   name: "appnav",
   data() {
       return {
- newNote:{},
-    computed: {
-        ...mapState([
-            'notes',
-            // 'newNote'
-        ]),
-        ...mapActions([
-            'addnote'
-        ])
-    },
-
-  methods: {
-      ...mapMutations([
-         'ADD_NOTE' 
-      ]),
-      addNote () {
-          this.addnote(this.newNote)
-      },
-} ,
+          newtitle:'',
+          newNote:'',       
 }
+},
+  components: {
+    Editor
+  },
+methods: {
+    saveNote() {
+        this.$store.dispatch('addNote', {
+            id:this.lastid+1,
+            title:this.newtitle,
+            note:this.newNote
+        }),
+        this.newtitle='',
+        this.newNote=''
+
+    }
+},
+computed: {
+    ...mapGetters(['notes']),
+    ...mapActions([
+        'addNote'
+    ]),
 }
 }
 </script>
@@ -135,4 +143,5 @@ export default {
     width:auto !important;
 }
 }
+
 </style>

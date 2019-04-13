@@ -26,7 +26,7 @@ export default {
 #diary_header {
     background-image:linear-gradient(rgba(6, 6, 195, 0.55), rgba(0, 0, 34, 0.55)),url('../images/header.png');
     background-size: contain;
-    height:400px;
+    height:300px;
     background-position: center center;
 }
 </style>
